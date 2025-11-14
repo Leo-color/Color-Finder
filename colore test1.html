@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <!-- SEO TAGS -->
+    <meta name="description" content="Strumento AI avanzato per rilevare i colori da immagini tramite selezione, segmentazione automatica e BodyPix ML.">
+    <meta name="keywords" content="color picker, AI color detection, riconoscimento colore, bodypix, image segmentation, rileva colore, web app colori">
+    <meta name="author" content="Tuo Nome">
+    <meta property="og:title" content="AI Color Detector">
+    <meta property="og:description" content="Rileva automaticamente il colore di qualsiasi oggetto con AI e strumenti interattivi.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="preview.png">
+    <meta property="og:url" content="https://tuo-sito.com/">
+    <!-- END SEO TAGS -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Color Picker avanzato — client-side (€0)</title>
+  <!-- OPTIONAL: Google Analytics (sostituisci G-XXXXXXXXXX col tuo Measurement ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)}
+    gtag('js', new Date());
+    // Sostituisci con il tuo ID GA4
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <style>
+    /* LIGHT THEME */
+    :root{--bg:#f7fafc;--card:#ffffff;--muted:#4a5568;--accent:#2563eb;--border:#e2e8f0}
+    html,body{height:100%;margin:0;background:var(--bg);color:#0b1220;font-family:Inter,Segoe UI,Arial,sans-serif}
+    .wrap{max-width:1100px;margin:18px auto;padding:18px}
+    header{display:flex;gap:12px;align-items:center}
+    h1{margin:0;font-size:20px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    input[type=file]{background:transparent;color:inherit}
+    button{background:var(--card);border:1px solid var(--border);padding:8px 12px;border-radius:8px;color:inherit;cursor:pointer}
+    button.active{outline:2px solid rgba(37,99,235,0.18)}
+    .panel{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(11,17,32,0.04);border:1px solid var(--border)}
+    canvas{width:100%;height:auto;border-radius:8px;display:block;background:#fff}
+    .info{display:flex;flex-direction:column;gap:8px}
+    .swatch{height:56px;border-radius:8px;border:1px solid var(--border)}
+    .codes{display:flex;flex-direction:column;gap:6px}
+    .code-row{display:flex;gap:6px;align-items:center}
+    .code{background:#f1f5f9;padding:6px 8px;border-radius:6px;font-family:monospace}
+    .small{font-size:12px;color:var(--muted)}
+    .hint{font-size:13px;color:var(--muted);margin-top:8px}
+    .footer{margin-top:14px;color:var(--muted);font-size:13px}
+    label{font-size:13px}
+    .row{display:flex;gap:8px;align-items:center}
+    input[type=text], input[type=number]{padding:6px;border:1px solid var(--border);border-radius:6px}
+    .status{font-size:13px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 id="siteTitle">Color Picker avanzato — client-side (€0)</h1>
+    </header>
+
+    <div id="loginBox" class="card" style="margin-top:12px;max-width:420px">
+      <div style="font-size:14px;margin-bottom:6px">Accesso utente (solo front-end, opzionale)</div>
+      <input id="userEmail" placeholder="Email" style="width:100%;padding:6px;border-radius:6px;margin-bottom:6px">
+      <input id="userPass" placeholder="Password" type="password" style="width:100%;padding:6px;border-radius:6px;margin-bottom:6px">
+      <button id="loginBtn">Accedi / Crea account</button>
+      <div id="loginStatus" class="small" style="margin-top:6px"></div>
+    </div>
+
+    <div class="controls">
+      <input id="file" type="file" accept="image/*">
+      <button id="btn-rect" class="active">Selezione rettangolare</button>
+      <button id="btn-free">Selezione libera</button>
+      <button id="btn-seed">Segmentazione (seed)</button>
+      <button id="btn-ml">Segmentazione ML automatica</button>
+      <button id="btn-clear">Azzera selezione</button>
+      <button id="btn-download">Scarica immagine</button>
+    </div>
+
+    <div class="panel">
+      <div class="card">
+        <canvas id="imageCanvas"></canvas>
+        <div class="hint">Carica immagine → scegli modalità → seleziona area. Modalità "Segmentazione (seed)": clicca sul punto dell'oggetto e regola la tolleranza.</div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <label class="small">Stride: <input id="stride" type="number" value="4" min="0" style="width:70px"></label>
+          <label class="small">Median filter radius: <input id="medianRadius" type="number" value="0" min="0" style="width:70px"></label>
+          <label class="small">K (dominant colors): <input id="kClusters" type="number" value="3" min="1" max="10" style="width:70px"></label>
+          <button id="btn-dominant">Calcola colori dominanti (k-means)</button>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label class="small">Seed tolerance: <input id="seedTol" type="range" min="0" max="255" value="30"></label>
+          <div class="small">(<span id="seedTolVal">30</span>)</div>
+        </div>
+
+        <hr style="margin:12px 0">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input id="searchColorInput" placeholder="#rrggbb o rgb(r,g,b)" style="width:220px">
+          <label class="small">Tol (0-255): <input id="searchTol" type="number" value="30" min="0" max="255" style="width:70px"></label>
+          <button id="btn-find">Trova colore nell'immagine</button>
+          <button id="btn-clear-find">Azzera ricerca</button>
+        </div>
+
+        <div id="status" class="status">Modello ML: non caricato</div>
+      </div>
+
+      <div class="card info">
+        <div class="small">Campione colore</div>
+        <div id="swatch" class="swatch"></div>
+
+        <div class="codes">
+          <div class="code-row"><div class="code" id="hex">#------</div><button id="copy-hex">Copia</button></div>
+          <div class="code-row"><div class="code" id="rgb">rgb(---, ---, ---)</div><button id="copy-rgb">Copia</button></div>
+          <div class="code-row"><div class="code" id="hsl">hsl(--°, --%, --%)</div><button id="copy-hsl">Copia</button></div>
+          <div class="code-row"><div class="code" id="cmyk">cmyk(--%, --%, --%, --%)</div><button id="copy-cmyk">Copia</button></div>
+        </div>
+
+        <div class="small">Statistiche selezione</div>
+        <div class="code-row"><div class="code" id="pixels">Pixels: 0</div></div>
+
+        <div style="margin-top:8px"><button id="copy-all">Copia tutto</button></div>
+
+        <div class="footer">Questo tool può funzionare interamente in locale. Per ottenere statistiche reali mensili usa Google Analytics (vedi istruzioni sotto).</div>
+
+        <hr style="margin:12px 0">
+        <div class="small">Visite mese corrente (demo locale):</div>
+        <div class="code-row"><div class="code" id="localVisits">--</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>Note e istruzioni rapide</h3>
+      <ol>
+        <li>Salva il file come <code>index.html</code> (viene fornito già pronto).</li>
+        <li>Per rendere il sito visibile a tutti e indicizzabile usa GitHub Pages o Netlify (gratis). Posso fornirti i passaggi esatti se vuoi.</li>
+        <li>Per avere statistiche reali mensili collegate al sito, crea un account Google Analytics e inserisci il tuo Measurement ID al posto di <code>G-XXXXXXXXXX</code> nello snippet all'inizio del file.</li>
+      </ol>
+    </div>
+  </div>
+
+<script>
+/* ---------- core UI & image logic (identico alle versioni precedenti; mantiene selezione, median filter, seed, k-means) ---------- */
+const fileEl = document.getElementById('file');
+const canvas = document.getElementById('imageCanvas');
+const ctx = canvas.getContext('2d');
+const swatch = document.getElementById('swatch');
+const hexEl = document.getElementById('hex');
+const rgbEl = document.getElementById('rgb');
+const hslEl = document.getElementById('hsl');
+const cmykEl = document.getElementById('cmyk');
+const pixelsEl = document.getElementById('pixels');
+const strideEl = document.getElementById('stride');
+const medianRadiusEl = document.getElementById('medianRadius');
+const kClustersEl = document.getElementById('kClusters');
+const btnDominant = document.getElementById('btn-dominant');
+const seedTol = document.getElementById('seedTol');
+const seedTolVal = document.getElementById('seedTolVal');
+const btnML = document.getElementById('btn-ml');
+
+const btnRect = document.getElementById('btn-rect');
+const btnFree = document.getElementById('btn-free');
+const btnSeed = document.getElementById('btn-seed');
+const btnClear = document.getElementById('btn-clear');
+const btnDownload = document.getElementById('btn-download');
+
+const btnFind = document.getElementById('btn-find');
+const searchColorInput = document.getElementById('searchColorInput');
+const searchTol = document.getElementById('searchTol');
+const btnClearFind = document.getElementById('btn-clear-find');
+
+let img = new Image();
+let mode = 'rect';
+let isDown = false;
+let start = null;
+let currentRect = null;
+let freePath = [];
+let lastSeed = null;
+let findMask = null;
+
+const maskCanvas = document.createElement('canvas');
+const maskCtx = maskCanvas.getContext('2d');
+const tmpCanvas = document.createElement('canvas');
+const tmpCtx = tmpCanvas.getContext('2d');
+
+function setMode(m){ mode = m; btnRect.classList.toggle('active', m==='rect'); btnFree.classList.toggle('active', m==='free'); btnSeed.classList.toggle('active', m==='seed'); }
+btnRect.onclick = () => setMode('rect');
+btnFree.onclick = () => setMode('free');
+btnSeed.onclick = () => setMode('seed');
+btnClear.onclick = () => { currentRect=null; freePath=[]; lastSeed=null; findMask=null; draw(); updateInfoEmpty(); }
+btnDownload.onclick = () => { const link = document.createElement('a'); link.download = 'image-with-selection.png'; link.href = canvas.toDataURL(); link.click(); }
+
+fileEl.onchange = e => {
+  const f = e.target.files[0]; if(!f) return; const url = URL.createObjectURL(f);
+  img = new Image(); img.crossOrigin = 'anonymous'; img.onload = () => { const maxW = 1400; let w = img.width, h = img.height; if(w > maxW){ const ratio = maxW / w; w = Math.round(w*ratio); h = Math.round(h*ratio); }
+    canvas.width = w; canvas.height = h; maskCanvas.width = w; maskCanvas.height = h; tmpCanvas.width = w; tmpCanvas.height = h; draw(); };
+  img.src = url;
+}
+
+function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); if(img && img.complete){ ctx.drawImage(img,0,0,canvas.width,canvas.height); }
+  ctx.save(); if(freePath.length){ ctx.lineWidth = 2; ctx.strokeStyle='rgba(37,99,235,0.9)'; ctx.beginPath(); ctx.moveTo(freePath[0].x, freePath[0].y); for(let i=1;i<freePath.length;i++) ctx.lineTo(freePath[i].x, freePath[i].y); ctx.stroke(); }
+  if(currentRect){ ctx.strokeStyle='rgba(37,99,235,0.9)'; ctx.lineWidth=2; ctx.strokeRect(currentRect.x,currentRect.y,currentRect.w,currentRect.h); ctx.fillStyle='rgba(37,99,235,0.06)'; ctx.fillRect(currentRect.x,currentRect.y,currentRect.w,currentRect.h); }
+  if(lastSeed){ ctx.globalAlpha = 0.35; ctx.drawImage(maskCanvas,0,0); ctx.globalAlpha = 1.0; ctx.strokeStyle='orange'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(lastSeed.x,lastSeed.y,6,0,Math.PI*2); ctx.stroke(); }
+  if(findMask){ ctx.globalAlpha = 0.35; ctx.drawImage(findMask,0,0); ctx.globalAlpha = 1.0; }
+  ctx.restore(); }
+
+function posFromEvent(e){ const rect = canvas.getBoundingClientRect(); const isTouch = e.touches && e.touches[0]; const clientX = isTouch ? e.touches[0].clientX : e.clientX; const clientY = isTouch ? e.touches[0].clientY : e.clientY; const x = Math.round((clientX - rect.left) * (canvas.width / rect.width)); const y = Math.round((clientY - rect.top) * (canvas.height / rect.height)); return {x,y}; }
+
+canvas.addEventListener('mousedown', e => { isDown=true; start = posFromEvent(e); if(mode==='free'){ freePath=[start]; } });
+canvas.addEventListener('mousemove', e => { if(!isDown) return; const p = posFromEvent(e); if(mode==='rect'){ const x=Math.min(start.x,p.x), y=Math.min(start.y,p.y); currentRect={x,y,w:Math.abs(p.x-start.x),h:Math.abs(p.y-start.y)}; draw(); } else { freePath.push(p); draw(); } });
+canvas.addEventListener('mouseup', e => { isDown=false; if(mode==='rect'){ sampleRect(); } else if(mode==='free'){ sampleFreehand(); } });
+
+canvas.addEventListener('touchstart', e => { e.preventDefault(); isDown=true; start = posFromEvent(e); if(mode==='free'){ freePath=[start]; } });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if(!isDown) return; const p = posFromEvent(e); if(mode==='rect'){ const x=Math.min(start.x,p.x), y=Math.min(start.y,p.y); currentRect={x,y,w:Math.abs(p.x-start.x),h:Math.abs(p.y-start.y)}; draw(); } else { freePath.push(p); draw(); } });
+canvas.addEventListener('touchend', e => { e.preventDefault(); isDown=false; if(mode==='rect'){ sampleRect(); } else if(mode==='free'){ sampleFreehand(); } });
+
+// seed (click to segment)
+canvas.addEventListener('click', e => { if(mode!=='seed') return; const p = posFromEvent(e); lastSeed = p; performSeedSegmentation(p, parseInt(seedTol.value,10)); });
+seedTol.oninput = () => { seedTolVal.textContent = seedTol.value; if(lastSeed) performSeedSegmentation(lastSeed, parseInt(seedTol.value,10)); }
+
+// SAMPLING
+function sampleRect(){ if(!currentRect) return; applyPreprocessing(); const s = Math.max(1,parseInt(strideEl.value||'4',10)); const im = ctx.getImageData(currentRect.x,currentRect.y,currentRect.w,currentRect.h); const {r,g,b,count} = sampleImageData(im.data, s); applyColor(r,g,b,count); }
+function sampleFreehand(){ if(freePath.length<3) return; applyPreprocessing(); maskCtx.clearRect(0,0,maskCanvas.width,maskCanvas.height); maskCtx.fillStyle='black'; maskCtx.beginPath(); maskCtx.moveTo(freePath[0].x,freePath[0].y); for(let i=1;i<freePath.length;i++) maskCtx.lineTo(freePath[i].x,freePath[i].y); maskCtx.closePath(); maskCtx.fill(); const im = ctx.getImageData(0,0,canvas.width,canvas.height); const mask = maskCtx.getImageData(0,0,canvas.width,canvas.height).data; const s = Math.max(1,parseInt(strideEl.value||'4',10)); let r=0,g=0,b=0,count=0; for(let y=0;y<canvas.height;y+=s){ for(let x=0;x<canvas.width;x+=s){ const idx = (y*canvas.width + x)*4; if(mask[idx]===0) continue; r += im.data[idx]; g += im.data[idx+1]; b += im.data[idx+2]; count++; }} if(count===0){ updateInfoEmpty(); return; } r = Math.round(r/count); g = Math.round(g/count); b = Math.round(b/count); applyColor(r,g,b,count); }
+
+function sampleImageData(data, stride){ let r=0,g=0,b=0,count=0; for(let i=0;i<data.length;i+=4*stride){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; } if(count===0) return {r:0,g:0,b:0,count:0}; return {r:Math.round(r/count), g:Math.round(g/count), b:Math.round(b/count), count}; }
+
+// PREPROCESSING: median filter (optional)
+function applyPreprocessing(){ const r = parseInt(medianRadiusEl.value||'0',10); if(r>0){ const w=canvas.width,h=canvas.height; tmpCtx.clearRect(0,0,w,h); tmpCtx.drawImage(canvas,0,0); const src = tmpCtx.getImageData(0,0,w,h); const dst = tmpCtx.createImageData(w,h); const radius = r; const window = []; for(let y=0;y<h;y++){ for(let x=0;x<w;x++){ const idx = (y*w + x)*4; for(let c=0;c<3;c++){ window.length=0; for(let wy=-radius;wy<=radius;wy++){ for(let wx=-radius;wx<=radius;wx++){ const nx = Math.min(w-1, Math.max(0, x+wx)); const ny = Math.min(h-1, Math.max(0, y+wy)); const nidx = (ny*w + nx)*4 + c; window.push(src.data[nidx]); }} window.sort((a,b)=>a-b); dst.data[idx+c] = window[Math.floor(window.length/2)]; } dst.data[idx+3]=255; }} tmpCtx.putImageData(dst,0,0); ctx.clearRect(0,0,w,h); ctx.drawImage(tmpCanvas,0,0); }}
+
+// SEED-BASED SEGMENTATION (flood fill by color distance)
+function performSeedSegmentation(seed, tol){ tmpCtx.clearRect(0,0,canvas.width,canvas.height); tmpCtx.drawImage(img,0,0,canvas.width,canvas.height); const im = tmpCtx.getImageData(0,0,canvas.width,canvas.height); const w=canvas.width,h=canvas.height; const mask = new Uint8Array(w*h); const stack = [seed.x, seed.y]; const visited = new Uint8Array(w*h); const startIdx = (seed.y*w + seed.x)*4; const sr = im.data[startIdx], sg = im.data[startIdx+1], sb = im.data[startIdx+2]; while(stack.length){ const y = stack.pop(); const x = stack.pop(); if(x<0||x>=w||y<0||y>=h) continue; const id = y*w + x; if(visited[id]) continue; visited[id]=1; const idx = id*4; const dr = im.data[idx]-sr, dg = im.data[idx+1]-sg, db = im.data[idx+2]-sb; const dist = Math.sqrt(dr*dr+dg*dg+db*db); if(dist <= tol){ mask[id]=1; stack.push(x+1,y); stack.push(x-1,y); stack.push(x,y+1); stack.push(x,y-1); } } maskCtx.clearRect(0,0,w,h); const maskImg = maskCtx.createImageData(w,h); let count=0, r=0,g=0,b=0; for(let i=0;i<w*h;i++){ if(mask[i]){ maskImg.data[i*4]=255; maskImg.data[i*4+1]=165; maskImg.data[i*4+2]=0; maskImg.data[i*4+3]=180; const idx = i*4; r+=im.data[idx]; g+=im.data[idx+1]; b+=im.data[idx+2]; count++; }} maskCtx.putImageData(maskImg,0,0); draw(); if(count===0){ updateInfoEmpty(); return; } r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count); applyColor(r,g,b,count); }
+
+// DOMINANT COLORS: k-means
+btnDominant.onclick = () => {
+  applyPreprocessing(); const s = Math.max(1,parseInt(strideEl.value||'4',10)); const k = Math.max(1,parseInt(kClustersEl.value||'3',10)); const im = ctx.getImageData(0,0,canvas.width,canvas.height); const pixels = []; for(let y=0;y<canvas.height;y+=s){ for(let x=0;x<canvas.width;x+=s){ const idx=(y*canvas.width + x)*4; pixels.push([im.data[idx], im.data[idx+1], im.data[idx+2]]); }} if(pixels.length===0) return alert('Nessun pixel letto. Abbassa lo stride.'); const clusters = kmeans(pixels,k,10); let out = ''; clusters.centroids.forEach((c,i)=>{ out += `${i+1}: ${rgbToHex(Math.round(c[0]),Math.round(c[1]),Math.round(c[2]))} (${Math.round(clusters.counts[i]/pixels.length*100)}%)\n`; }); alert('Colori dominanti (K='+k+'):\n\n'+out);
+}
+function kmeans(data,k,iterations){ const centroids = []; const n = data.length; for(let i=0;i<k;i++){ const r = data[Math.floor(Math.random()*n)]; centroids.push([r[0],r[1],r[2]]); } const counts = new Array(k).fill(0); for(let it=0; it<iterations; it++){ for(let i=0;i<k;i++){ counts[i]=0; centroids[i]=[0,0,0]; } for(let i=0;i<n;i++){ let best=0,bd=distanceSq(data[i],centroids[0]); for(let j=1;j<k;j++){ const d = distanceSq(data[i],centroids[j]); if(d<bd){ bd=d; best=j; } } centroids[best][0]+=data[i][0]; centroids[best][1]+=data[i][1]; centroids[best][2]+=data[i][2]; counts[best]++; } for(let j=0;j<k;j++){ if(counts[j]===0) centroids[j]=data[Math.floor(Math.random()*n)]; else{ centroids[j][0]/=counts[j]; centroids[j][1]/=counts[j]; centroids[j][2]/=counts[j]; } } } return {centroids,counts}; }
+function distanceSq(a,b){ const dx=a[0]-b[0], dy=a[1]-b[1], dz=a[2]-b[2]; return dx*dx+dy*dy+dz*dz; }
+
+// APPLY color results
+function applyColor(r,g,b,count){ const hex = rgbToHex(r,g,b); swatch.style.background = hex; hexEl.textContent = hex.toUpperCase(); rgbEl.textContent = `rgb(${r}, ${g}, ${b})`; const hsl = rgbToHsl(r,g,b); hslEl.textContent = `hsl(${Math.round(hsl.h)}°, ${Math.round(hsl.s)}%, ${Math.round(hsl.l)}%)`; cmykEl.textContent = rgbToCmykPerc(r,g,b); pixelsEl.textContent = `Pixels: ${count}`; }
+function updateInfoEmpty(){ swatch.style.background='transparent'; hexEl.textContent='#------'; rgbEl.textContent='rgb(---, ---, ---)'; hslEl.textContent='hsl(--°, --%, --%)'; cmykEl.textContent='cmyk(--%, --%, --%, --%)'; pixelsEl.textContent='Pixels: 0'; }
+
+// UTILITIES
+function componentToHex(c){ const s = c.toString(16); return s.length==1 ? '0'+s : s; }
+function rgbToHex(r,g,b){ return '#'+componentToHex(r)+componentToHex(g)+componentToHex(b); }
+function rgbToHsl(r,g,b){ r/=255; g/=255; b/=255; const max = Math.max(r,g,b), min = Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min){ h=s=0; } else{ const d=max-min; s = l>0.5 ? d/(2-max-min) : d/(max+min); switch(max){ case r: h = (g-b)/d + (g<b?6:0); break; case g: h = (b-r)/d + 2; break; case b: h = (r-g)/d + 4; break; } h *= 60; } return {h: h, s: s*100, l: l*100}; }
+function rgbToCmykPerc(r,g,b){ const rn=r/255, gn=g/255, bn=b/255; const k = 1 - Math.max(rn,gn,bn); if(k===1) return 'cmyk(0%, 0%, 0%, 100%)'; const c = (1-rn-k)/(1-k); const m = (1-gn-k)/(1-k); const y = (1-bn-k)/(1-k); return `cmyk(${Math.round(c*100)}%, ${Math.round(m*100)}%, ${Math.round(y*100)}%, ${Math.round(k*100)}%)`; }
+
+// COPY buttons
+function copyText(t){ navigator.clipboard.writeText(t).then(()=>{ alert('Copiato: '+t); }, ()=>{ prompt('Copia manuale:', t); }); }
+document.getElementById('copy-hex').onclick = ()=>copyText(hexEl.textContent);
+document.getElementById('copy-rgb').onclick = ()=>copyText(rgbEl.textContent);
+document.getElementById('copy-hsl').onclick = ()=>copyText(hslEl.textContent);
+document.getElementById('copy-cmyk').onclick = ()=>copyText(cmykEl.textContent);
+document.getElementById('copy-all').onclick = ()=>{ copyText(`${hexEl.textContent}\n${rgbEl.textContent}\n${hslEl.textContent}\n${cmykEl.textContent}`); }
+
+// INIT
+updateInfoEmpty();
+
+// VISIT COUNTER (demo locale) - non globale, solo per il browser dell'utente
+(function(){ try{ const key='cp_visits'; const now = Date.now(); let arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(now); const cutoff = now - 1000*60*60*24*365; arr = arr.filter(t=>t>cutoff); localStorage.setItem(key, JSON.stringify(arr)); const d = new Date(now); const month = d.getMonth(); const year = d.getFullYear(); const visitsThisMonth = arr.filter(t=>{ const dt=new Date(t); return dt.getMonth()===month && dt.getFullYear()===year; }).length; document.getElementById('localVisits').textContent = visitsThisMonth; }catch(e){ document.getElementById('localVisits').textContent='n/a'; }})();
+
+</script>
+
+<!-- ML SEGMENTATION (BodyPix/TensorFlow.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0/dist/body-pix.min.js"></script>
+<script>
+let bodyPixModel = null;
+async function loadBodyPix() {
+  const status = document.getElementById('status');
+  status.textContent = "Caricamento modello ML (BodyPix)...";
+  try{
+    bodyPixModel = await bodypix.load({architecture:'MobileNetV1', outputStride:16, multiplier:0.75});
+    status.textContent = "Modello ML pronto";
+  }catch(e){ status.textContent = "Errore caricamento modello ML"; console.error(e); }
+}
+loadBodyPix();
+
+// computeColorFromMask: media dei pixel dove maskCanvas alpha>0
+function computeColorFromMask(){ if(!img || !img.complete) return; const w=canvas.width,h=canvas.height; const im = ctx.getImageData(0,0,w,h); const mask = maskCtx.getImageData(0,0,w,h).data; let r=0,g=0,b=0,count=0; for(let y=0;y<h;y++){ for(let x=0;x<w;x++){ const idx=(y*w+x)*4; if(mask[idx+3]>0){ r+=im.data[idx]; g+=im.data[idx+1]; b+=im.data[idx+2]; count++; } }} if(count===0){ updateInfoEmpty(); return; } r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count); applyColor(r,g,b,count); draw(); }
+
+async function segmentWithML(){ if(!bodyPixModel || !img || !img.complete) return; document.getElementById('status').textContent='Segmentazione ML in corso...'; const segmentation = await bodyPixModel.segmentPersonParts(img, {internalResolution:'medium', segmentationThreshold:0.5}); const partMap = segmentation.data; const w=canvas.width,h=canvas.height; maskCtx.clearRect(0,0,w,h); const maskImg = maskCtx.createImageData(w,h); for(let i=0;i<partMap.length;i++){ if(partMap[i] !== -1){ maskImg.data[i*4]=255; maskImg.data[i*4+1]=165; maskImg.data[i*4+2]=0; maskImg.data[i*4+3]=180; }} maskCtx.putImageData(maskImg,0,0); computeColorFromMask(); document.getElementById('status').textContent='Segmentazione ML completata'; }
+btnML.onclick = () => { segmentWithML(); }
+
+// FIND COLOR in image: user inputs hex or rgb, we create mask of pixels within tolerance
+function parseColorInput(s){ s = s.trim(); if(s.startsWith('#')){ const hex = s.slice(1); if(hex.length===3) return [parseInt(hex[0]+hex[0],16),parseInt(hex[1]+hex[1],16),parseInt(hex[2]+hex[2],16)]; if(hex.length===6) return [parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16)]; } const m = s.match(/(\d{1,3})\D+(\d{1,3})\D+(\d{1,3})/); if(m) return [parseInt(m[1],10),parseInt(m[2],10),parseInt(m[3],10)]; return null; }
+
+btnFind.onclick = () => {
+  const color = parseColorInput(searchColorInput.value || ''); if(!color){ alert('Formato colore non valido. Usa #rrggbb o rgb(r,g,b)'); return; }
+  const tol = Math.max(0, Math.min(255, parseInt(searchTol.value||'30',10)));
+  if(!img || !img.complete){ alert('Carica prima un immagine'); return; }
+  const w=canvas.width,h=canvas.height; tmpCtx.clearRect(0,0,w,h); tmpCtx.drawImage(img,0,0,w,h); const im = tmpCtx.getImageData(0,0,w,h).data;
+  findMask = document.createElement('canvas'); findMask.width=w; findMask.height=h; const fctx=findMask.getContext('2d'); const imgd = fctx.createImageData(w,h);
+  let count=0,r=0,g=0,b=0;
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const idx=(y*w+x)*4; const dr = im[idx]-color[0], dg=im[idx+1]-color[1], db=im[idx+2]-color[2]; const dist = Math.sqrt(dr*dr+dg*dg+db*db);
+      if(dist<=tol){ imgd.data[idx]=255; imgd.data[idx+1]=255; imgd.data[idx+2]=0; imgd.data[idx+3]=160; r+=im[idx]; g+=im[idx+1]; b+=im[idx+2]; count++; }
+    }
+  }
+  fctx.putImageData(imgd,0,0); draw(); if(count===0){ alert('Nessun pixel trovato con quella tolleranza'); return; }
+  r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count); applyColor(r,g,b,count);
+}
+
+btnClearFind.onclick = () => { findMask = null; draw(); updateInfoEmpty(); }
+
+</script>
+
+</body>
+</html>
