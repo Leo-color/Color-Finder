@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "build:android:preview": "eas build -p android --profile preview",
     "build:android:production": "eas build -p android --profile production",
-    "generate-assets": "node scripts/generate-assets.js"
+    "generate-assets": "node scripts/generate-assets.js",
+    "build:pdf-guides": "node scripts/build-pdf-guides.js"
   },
   "dependencies": {
     "expo": "~51.0.28",
