@@ -78,7 +78,7 @@ Quando la build è completata:
 3. Sul telefono:
    - Vai in **Impostazioni → Sicurezza → Sorgenti sconosciute** → Abilita
    - Apri il file APK → **Installa**
-4. Avvia **Solfix Math** dal menu app
+4. Avvia **Solvix Math** dal menu app
 
 ---
 
@@ -97,7 +97,7 @@ Questo crea un file `.aab` che caricherai su Google Play Console.
 ## STEP 6 — Testare l'OCR sul Dispositivo Reale
 
 Con l'APK installato sul telefono:
-1. Apri Solfix Math
+1. Apri Solvix Math
 2. Consenti accesso alla fotocamera
 3. Punta la fotocamera su un'espressione matematica scritta o stampata
 4. Premi il pulsante di scatto
