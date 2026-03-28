@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SolveResult } from '../utils/mathSolver';
 
-const HISTORY_KEY = '@mathsnap_history';
+const HISTORY_KEY = '@solvix_history';
 const MAX_HISTORY = 100;
 
 export interface HistoryEntry extends SolveResult {

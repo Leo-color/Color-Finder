@@ -1,4 +1,4 @@
-# MathSnap — Instant Math Solver
+# Solvix — Instant Math Solver
 
 **Scatta una foto a qualsiasi espressione matematica e ottieni la risposta istantaneamente.**
 

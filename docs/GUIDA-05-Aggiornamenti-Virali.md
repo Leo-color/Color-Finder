@@ -23,7 +23,7 @@ eas build -p android --profile production
 
 ### STEP 3 — Carica su Play Console
 1. Vai su play.google.com/console
-2. Seleziona MathSnap → **Production** → **Create new release**
+2. Seleziona Solvix → **Production** → **Create new release**
 3. Carica il nuovo AAB
 4. Scrivi le note di aggiornamento
 5. Pubblica
@@ -74,7 +74,7 @@ Azioni:
 ```
 [Inquadratura del foglio con il problema di matematica]
 "Questo problema mi ha fatto impazzire..."
-[Apri MathSnap]
+[Apri Solvix]
 [Scatta foto]
 [Zoom sul risultato: RISPOSTA ESATTA + PASSAGGI]
 "RAGA QUESTA APP È ILLEGALE 💀"
@@ -92,9 +92,9 @@ Mostra un foglio con 10 problemi di matematica
 **Video idea #3:**
 ```
 "POV: hai la verifica domani"
-[Stai per studiare ma usi MathSnap per fare i compiti velocemente]
+[Stai per studiare ma usi Solvix per fare i compiti velocemente]
 [Risultati istantanei]
-"Grazie MathSnap 🙏"
+"Grazie Solvix 🙏"
 ```
 
 ### Settimana 3 — Reddit e Forum
@@ -141,7 +141,7 @@ Nella Google Play Console, tieni d'occhio:
 2. Aggiungi le funzionalità richieste dagli utenti
 3. Chiedi agli utenti soddisfatti di lasciare una recensione:
    - Dopo una soluzione riuscita, mostra un popup gentile:
-   *"Ti piace MathSnap? ⭐ Lascia una recensione!"*
+   *"Ti piace Solvix? ⭐ Lascia una recensione!"*
 
 ---
 
@@ -154,7 +154,7 @@ Mantenendo l'app gratuita ma aggiungendo ricavi:
 - Mostra banner discreto nella HistoryScreen
 - Stima: $0.50–$2 per 1000 utenti/giorno
 
-### Opzione B — "MathSnap Pro" (in-app purchase)
+### Opzione B — "Solvix Pro" (in-app purchase)
 Funzionalità premium a $0.99/mese:
 - Risoluzione sistemi di equazioni
 - Grafici di funzioni
@@ -187,4 +187,4 @@ Ricorda: le app virali hanno successo perché:
 4. **Hanno un effetto "WOW"** ✅ (scatto foto → risposta magica)
 5. **Sono facili da condividere** ✅ (tasto share in app)
 
-MathSnap ha tutti questi ingredienti. Ora tocca a te!
+Solvix ha tutti questi ingredienti. Ora tocca a te!

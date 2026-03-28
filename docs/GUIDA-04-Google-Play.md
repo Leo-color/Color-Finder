@@ -14,7 +14,7 @@
 3. Accedi con il tuo account Google (o creane uno)
 4. Compila il modulo:
    - **Account type:** Individual (se pubblica da solo) o Organization
-   - **Developer name:** Il nome che vedrà gli utenti (es. "MathSnap Labs")
+   - **Developer name:** Il nome che vedrà gli utenti (es. "Solvix Labs")
    - **Email address:** La tua email
    - **Phone number:** Il tuo numero di telefono
 5. Clicca **"Continue to payment"**
@@ -30,7 +30,7 @@
 1. Accedi a **https://play.google.com/console**
 2. Clicca **"Create app"** (pulsante blu in alto a destra)
 3. Compila:
-   - **App name:** `MathSnap - Instant Math Solver`
+   - **App name:** `Solvix - Instant Math Solver`
    - **Default language:** Italian (se il pubblico è italiano) o English
    - **App or game:** `App`
    - **Free or paid:** `Free`
@@ -76,7 +76,7 @@ Nella barra laterale sinistra, completa tutte le sezioni con il pallino arancion
 Clicca **"Data safety"** nella barra laterale:
 1. **"Does your app collect or share any of the required user data types?"** → **No**
 
-   *(MathSnap non raccoglie dati personali — tutto è locale sul device)*
+   *(Solvix non raccoglie dati personali — tutto è locale sul device)*
 
 2. **"Is all of the user data collected by your app encrypted in transit?"** → **Yes**
 3. **"Do you provide a way for users to request that their data is deleted?"** → **No**
@@ -90,7 +90,7 @@ Clicca **"Main store listing"** nella barra laterale:
 
 ### App name
 ```
-MathSnap - Instant Math Solver
+Solvix - Instant Math Solver
 ```
 
 ### Short description (max 80 caratteri)
@@ -103,14 +103,14 @@ Copia e incolla questo:
 ```
 📸 POINT, SNAP, SOLVE — It's that simple!
 
-MathSnap uses your camera to instantly read and solve any math expression. No internet required. No subscription. 100% FREE forever.
+Solvix uses your camera to instantly read and solve any math expression. No internet required. No subscription. 100% FREE forever.
 
 ✨ HOW IT WORKS:
 1. Point your camera at a math problem
 2. Tap the button
 3. See the answer with step-by-step explanation
 
-🧮 WHAT MATHSNAP CAN SOLVE:
+🧮 WHAT SOLVIX CAN SOLVE:
 • Basic arithmetic: 2 + 3 × 4, (15 + 5) / 4
 • Equations: x + 7 = 12 → x = 5
 • Powers and roots: 2^8 = 256, √144 = 12
@@ -119,7 +119,7 @@ MathSnap uses your camera to instantly read and solve any math expression. No in
 • Complex expressions: ((3+5)×2)^2 - 10
 
 📚 STEP-BY-STEP SOLUTIONS:
-Don't just get the answer — understand HOW to get there. MathSnap shows every step of the calculation so you learn while you solve.
+Don't just get the answer — understand HOW to get there. Solvix shows every step of the calculation so you learn while you solve.
 
 🔒 COMPLETELY PRIVATE:
 • All processing happens ON YOUR DEVICE
@@ -139,7 +139,7 @@ Every solved problem is saved locally so you can review your work anytime.
 🚀 FREE FOREVER:
 No premium tier. No paywalls. No ads. Just math.
 
-MathSnap is powered by Google ML Kit for on-device text recognition and mathjs for calculation — both 100% free open-source technologies.
+Solvix is powered by Google ML Kit for on-device text recognition and mathjs for calculation — both 100% free open-source technologies.
 ```
 
 ### 4a — Graphic assets (immagini richieste)
@@ -153,7 +153,7 @@ Devi caricare:
 **Feature Graphic (1024×500 PNG):**
 Crea un'immagine con:
 - Sfondo scuro (#0A0A1A)
-- Logo MathSnap a sinistra
+- Logo Solvix a sinistra
 - Screenshot dell'app a destra
 - Testo "Scan. Solve. Learn." in grande
 
@@ -184,7 +184,7 @@ Per catturare screenshot: tieni premuto il tasto `Power + Volume Basso`
 4. Attendi il caricamento (1–5 minuti)
 5. Nel campo **"Release notes"**:
 ```
-Initial release of MathSnap.
+Initial release of Solvix.
 
 • Instant math expression scanning via camera
 • On-device OCR — no internet needed
@@ -211,7 +211,7 @@ Riceverai una email quando l'app è approvata.
 
 ## STEP 7 — Verifica la Pubblicazione
 
-1. Cerca **"MathSnap"** sul Google Play Store dal tuo telefono
+1. Cerca **"Solvix"** sul Google Play Store dal tuo telefono
 2. Clicca **"Install"**
 3. Testa tutte le funzionalità
 
@@ -253,6 +253,6 @@ Riceverai una email quando l'app è approvata.
 
 ---
 
-**🎉 Congratulazioni! MathSnap è su Google Play!**
+**🎉 Congratulazioni! Solvix è su Google Play!**
 
 **➡ Prossima guida: GUIDA-05-Aggiornamenti-Virali.md**

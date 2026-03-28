@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MathSnap",
-    "slug": "mathsnap",
+    "name": "Solvix",
+    "slug": "solvix",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,10 +14,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.mathsnap.app",
+      "bundleIdentifier": "com.solvix.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "MathSnap uses the camera to scan and solve math expressions instantly.",
-        "NSPhotoLibraryUsageDescription": "MathSnap accesses your photo library so you can solve math from existing photos."
+        "NSCameraUsageDescription": "Solvix uses the camera to scan and solve math expressions instantly.",
+        "NSPhotoLibraryUsageDescription": "Solvix accesses your photo library so you can solve math from existing photos."
       }
     },
     "android": {
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0A0A1A"
       },
-      "package": "com.mathsnap.app",
+      "package": "com.solvix.app",
       "versionCode": 1,
       "permissions": [
         "android.permission.CAMERA",
@@ -39,20 +39,20 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "MathSnap uses the camera to scan math expressions and solve them instantly."
+          "cameraPermission": "Solvix uses the camera to scan math expressions and solve them instantly."
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "MathSnap accesses your photos to solve math expressions from images."
+          "photosPermission": "Solvix accesses your photos to solve math expressions from images."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow MathSnap to save solved math results to your gallery.",
-          "savePhotosPermission": "Allow MathSnap to save results to your gallery."
+          "photosPermission": "Allow Solvix to save solved math results to your gallery.",
+          "savePhotosPermission": "Allow Solvix to save results to your gallery."
         }
       ]
     ]

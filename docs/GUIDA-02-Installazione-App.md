@@ -1,4 +1,4 @@
-# GUIDA 2 — Scarica e Installa il Progetto MathSnap
+# GUIDA 2 — Scarica e Installa il Progetto Solvix
 ## Passo per Passo
 
 > **Prerequisito:** Guida 1 completata
@@ -12,17 +12,17 @@ Apri il Terminale e scegli UNA delle due opzioni:
 
 ### Opzione A — Da GitHub (se il progetto è su GitHub)
 ```bash
-git clone https://github.com/leo-color/color-finder.git MathSnap
-cd MathSnap
+git clone https://github.com/leo-color/color-finder.git Solvix
+cd Solvix
 git checkout claude/math-expression-solver-app-LNvBr
 ```
 
 ### Opzione B — Copia manuale
 Se hai ricevuto il file ZIP:
-1. Estrai lo ZIP in una cartella es. `C:\Progetti\MathSnap` (Windows) o `~/Progetti/MathSnap` (Mac/Linux)
+1. Estrai lo ZIP in una cartella es. `C:\Progetti\Solvix` (Windows) o `~/Progetti/Solvix` (Mac/Linux)
 2. Nel terminale:
 ```bash
-cd ~/Progetti/MathSnap
+cd ~/Progetti/Solvix
 ```
 *(sostituisci con il percorso corretto)*
 
@@ -78,7 +78,7 @@ Poi controlla che `app.json` abbia il tuo account:
 ```bash
 cat app.json
 ```
-Assicurati che `"slug": "mathsnap"` corrisponda al nome scelto su expo.dev.
+Assicurati che `"slug": "solvix"` corrisponda al nome scelto su expo.dev.
 
 ---
 
@@ -112,7 +112,7 @@ code .
 
 Dovresti vedere questa struttura:
 ```
-MathSnap/
+Solvix/
 ├── App.tsx                    ← Entry point
 ├── app.json                   ← Config Expo
 ├── package.json               ← Dipendenze

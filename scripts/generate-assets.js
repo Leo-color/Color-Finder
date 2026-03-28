@@ -109,7 +109,7 @@ async function run() {
   <circle cx="621" cy="1168" r="48" fill="rgba(0,212,255,0.2)"/>
   <text x="621" y="1190" text-anchor="middle" font-family="sans-serif" font-size="56">📐</text>
   <!-- App name -->
-  <text x="621" y="1450" text-anchor="middle" font-family="sans-serif" font-size="80" font-weight="800" fill="white">MathSnap</text>
+  <text x="621" y="1450" text-anchor="middle" font-family="sans-serif" font-size="80" font-weight="800" fill="white">Solvix</text>
   <!-- Tagline -->
   <text x="621" y="1510" text-anchor="middle" font-family="sans-serif" font-size="36" fill="#8888AA">Instant Math Solver</text>
 </svg>`;

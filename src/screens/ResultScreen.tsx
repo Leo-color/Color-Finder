@@ -139,7 +139,7 @@ export default function ResultScreen() {
       `Expression: ${result.cleaned}\n` +
       `Answer: ${result.result}` +
       steps +
-      '\n\n📲 Solved with MathSnap - Free Math Solver';
+      '\n\n📲 Solved with Solvix - Free Math Solver';
 
     await Share.share({ message: msg });
   }, [result]);
