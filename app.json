@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "MathSnap",
+    "slug": "mathsnap",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A1A"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.mathsnap.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "MathSnap uses the camera to scan and solve math expressions instantly.",
+        "NSPhotoLibraryUsageDescription": "MathSnap accesses your photo library so you can solve math from existing photos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0A1A"
+      },
+      "package": "com.mathsnap.app",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES"
+      ]
+    },
+    "plugins": [
+      "react-native-mlkit-ocr",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "MathSnap uses the camera to scan math expressions and solve them instantly."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "MathSnap accesses your photos to solve math expressions from images."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow MathSnap to save solved math results to your gallery.",
+          "savePhotosPermission": "Allow MathSnap to save results to your gallery."
+        }
+      ]
+    ]
+  }
+}
