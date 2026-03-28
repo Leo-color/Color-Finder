@@ -1,0 +1,46 @@
+{
+  "name": "solvix-math",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "build:android:preview": "eas build -p android --profile preview",
+    "build:android:production": "eas build -p android --profile production",
+    "generate-assets": "node scripts/generate-assets.js",
+    "build:pdf-guides": "node scripts/build-pdf-guides.js"
+  },
+  "dependencies": {
+    "expo": "~51.0.28",
+    "expo-camera": "~15.0.16",
+    "expo-image-picker": "~15.0.7",
+    "expo-sharing": "~12.0.1",
+    "expo-haptics": "~13.0.1",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-splash-screen": "~0.27.7",
+    "expo-status-bar": "~1.12.1",
+    "expo-font": "~12.0.10",
+    "expo-file-system": "~17.0.1",
+    "expo-media-library": "~16.0.5",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-reanimated": "~3.10.1",
+    "react-native-gesture-handler": "~2.16.2",
+    "react-native-safe-area-context": "4.10.5",
+    "react-native-screens": "3.31.1",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/native-stack": "^6.9.26",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@expo/vector-icons": "^14.0.2",
+    "react-native-mlkit-ocr": "^0.1.6",
+    "mathjs": "^13.1.1",
+    "react-native-view-shot": "^3.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@types/react": "~18.2.79",
+    "typescript": "~5.3.3",
+    "sharp": "^0.33.0"
+  }
+}
