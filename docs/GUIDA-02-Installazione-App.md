@@ -1,4 +1,4 @@
-# GUIDA 2 — Scarica e Installa il Progetto Solvix
+# GUIDA 2 — Scarica e Installa il Progetto Solfix Math
 ## Passo per Passo
 
 > **Prerequisito:** Guida 1 completata
@@ -12,17 +12,17 @@ Apri il Terminale e scegli UNA delle due opzioni:
 
 ### Opzione A — Da GitHub (se il progetto è su GitHub)
 ```bash
-git clone https://github.com/leo-color/color-finder.git Solvix
-cd Solvix
+git clone https://github.com/leo-color/color-finder.git Solfix Math
+cd Solfix Math
 git checkout claude/math-expression-solver-app-LNvBr
 ```
 
 ### Opzione B — Copia manuale
 Se hai ricevuto il file ZIP:
-1. Estrai lo ZIP in una cartella es. `C:\Progetti\Solvix` (Windows) o `~/Progetti/Solvix` (Mac/Linux)
+1. Estrai lo ZIP in una cartella es. `C:\Progetti\Solfix Math` (Windows) o `~/Progetti/Solfix Math` (Mac/Linux)
 2. Nel terminale:
 ```bash
-cd ~/Progetti/Solvix
+cd ~/Progetti/Solfix Math
 ```
 *(sostituisci con il percorso corretto)*
 
@@ -78,7 +78,7 @@ Poi controlla che `app.json` abbia il tuo account:
 ```bash
 cat app.json
 ```
-Assicurati che `"slug": "solvix"` corrisponda al nome scelto su expo.dev.
+Assicurati che `"slug": "solfixmath"` corrisponda al nome scelto su expo.dev.
 
 ---
 
@@ -112,7 +112,7 @@ code .
 
 Dovresti vedere questa struttura:
 ```
-Solvix/
+Solfix Math/
 ├── App.tsx                    ← Entry point
 ├── app.json                   ← Config Expo
 ├── package.json               ← Dipendenze

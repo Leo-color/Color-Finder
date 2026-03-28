@@ -161,7 +161,7 @@ export default function ScanScreen() {
         <MaterialCommunityIcons name="camera-off" size={64} color={Colors.textMuted} />
         <Text style={styles.permissionTitle}>Camera Access Required</Text>
         <Text style={styles.permissionText}>
-          Solvix needs camera access to scan and solve math expressions.
+          Solfix Math needs camera access to scan and solve math expressions.
         </Text>
         <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
           <LinearGradient colors={Gradients.button} style={styles.permissionButtonGrad}>
@@ -196,7 +196,7 @@ export default function ScanScreen() {
       <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
         <View style={styles.logoRow}>
           <MaterialCommunityIcons name="calculator-variant" size={26} color={Colors.accent} />
-          <Text style={styles.appName}>Solvix</Text>
+          <Text style={styles.appName}>Solfix Math</Text>
         </View>
         <TouchableOpacity
           style={styles.iconBtn}

@@ -1,5 +1,5 @@
 # GUIDA 1 — Installazione Ambiente di Sviluppo
-## Solvix · Passo per Passo
+## Solfix Math · Passo per Passo
 
 > **Tempo stimato:** 30–45 minuti
 > **Sistema operativo:** Windows 10/11, macOS, o Ubuntu/Debian
